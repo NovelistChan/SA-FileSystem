@@ -5,3 +5,5 @@
   - So now you can see two projects: datanode & namenode, run several instances(3 in example) in datanode and one instance in namenode then check the interfaces by POSTMAN.
   - Here is the constructure of the whole project.
   - Here are the output-examples displayed by POSTMAN.
+### References
+  - http://www.ityouknow.com/ & https://github.com/ityouknow/spring-boot-examples (Especially spring-cloud-eureka & upload files in spring-boot)
