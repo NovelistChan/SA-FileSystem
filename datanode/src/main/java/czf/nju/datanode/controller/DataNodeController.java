@@ -1,4 +1,4 @@
-package czf.nju.datanode.datanode;
+package czf.nju.datanode.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
