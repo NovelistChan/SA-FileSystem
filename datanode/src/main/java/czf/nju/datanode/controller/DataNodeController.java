@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DataNodeController {
     @RequestMapping("/hello")
-    public String index(@RequestParam String name) {
-        return "hello DataNode";
+    public String index() {
+        return "Hello DataNode";
     }
 }
