@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * 上传、分块、下载
@@ -28,6 +29,20 @@ public class NameNodeService {
     @Autowired
     DataNodeRepository dataNodeRepository;
 
+    private Logger logger = Logger.getLogger(NameNodeService.class.getName());
+
+    void checkDataNodeInfo() {
+        List<DataNode> dataNodeList = dataNodeRepository.findAll();
+        for(int i = 0; i < dataNodeList.size(); i++){
+            logger.info(dataNodeList.get(i).getUrl() + dataNodeList.get(i).getPort() + dataNodeList.get(i).getBlockInUse());
+        }
+    }
+
+    /**
+     * 上传文件，分Block并存到各个DataNode
+     * 负载均衡：使用Block数最少最优先
+     * @param file
+     */
     public void uploadFile(byte file[]){
         int blockNum = file.length / SIZE + 1;
         //如果文件长度是块大小的倍数，只分length/SIZE块即可，不必+1
@@ -35,6 +50,7 @@ public class NameNodeService {
             blockNum--;
         System.out.println(blockNum + "\n" + file);
         List<DataNode> dataNodeList = dataNodeRepository.findAll();
+        checkDataNodeInfo();
         //负载均衡
         //选取使用block数最少的node存储一个新的block
         //i个block每个有TRANSCRIPT个副本
@@ -52,5 +68,6 @@ public class NameNodeService {
         }
         for(int i = 0; i < dataNodeList.size(); i++)
             dataNodeRepository.save(dataNodeList.get(i));
+        checkDataNodeInfo();
     }
 }
