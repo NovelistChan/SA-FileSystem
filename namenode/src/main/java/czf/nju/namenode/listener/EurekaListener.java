@@ -27,8 +27,10 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaInstanceRegisteredEvent event) {
-        logger.info("新增" + event.getInstanceInfo().getInstanceId() + "号datanode节点");
-        dataNodeService.newDataNode(event.getInstanceInfo().getInstanceId(), event.getInstanceInfo().getIPAddr());
+        logger.info("新增节点" + event.getInstanceInfo().getAppName());
+        logger.info("url: " + event.getInstanceInfo().getIPAddr());
+
+        dataNodeService.newDataNode(event.getInstanceInfo().getInstanceId(), event.getInstanceInfo().getIPAddr(), event.getInstanceInfo().getPort());
     }
 
     /**
@@ -37,7 +39,7 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaInstanceCanceledEvent event) {
-        logger.info(event.getServerId() + "号datanode已被删除");
+        logger.info(event.getServerId() + "号datanode已下线");
         dataNodeService.deleteDataNode(event.getServerId());
     }
 
@@ -47,7 +49,7 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaRegistryAvailableEvent event) {
-        System.err.println("注册中心 启动");
+        logger.info("注册中心 启动");
     }
 
     /**
@@ -56,6 +58,16 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaServerStartedEvent event) {
-        System.err.println("Eureka Server 启动");
+        logger.info("Eureka Server 启动");
     }
+
+    /**
+     * 服务续约
+     * @param event
+     */
+    @EventListener
+    public void listen(EurekaInstanceRenewedEvent event) {
+        logger.info(event.getAppName() + " 服务进行续约");
+    }
+
 }

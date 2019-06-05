@@ -12,6 +12,9 @@ import javax.persistence.Id;
 public class Block extends BaseEntity{
     @Value("${block.size}")
     private int SIZE;
+
+    @Value("${block.transcript}")
+    private int TRANSCRIPT;
     /**
      * 块数据
      */
@@ -41,5 +44,9 @@ public class Block extends BaseEntity{
         this.setId(Id);
         this.setData(data);
         this.setDataNodeId(dataNodeId);
+    }
+
+    public Block(){
+
     }
 }

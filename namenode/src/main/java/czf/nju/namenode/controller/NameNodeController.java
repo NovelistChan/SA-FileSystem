@@ -30,32 +30,25 @@ public class NameNodeController {
     @Autowired
     private NameNodeService nameNodeService;
 
-    @GetMapping("/**")
-    public void downloadFile(){
-
+    @GetMapping("/download")
+    public String downloadFile(){
+        return "Download Page";
     }
 
-    @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file,
-                           RedirectAttributes redirectAttributes){
+    @PutMapping("/upload")
+    public String uploadFile(@RequestParam("file") String file){
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            return "redirect:uploadStatus";
+            return "No File Selected!";
         }
-        try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            nameNodeService.uploadFile(bytes);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Get the file and save it somewhere
+        byte[] bytes = file.getBytes();
+        nameNodeService.uploadFile(bytes);
 
-        return "redirect:/uploadStatus";
+        return "Upload Success!";
     }
 
-    @DeleteMapping("/**")
-    public void deleteFile(){
-
+    @DeleteMapping("/delete")
+    public String deleteFile(){
+        return "Delete Page";
     }
 }

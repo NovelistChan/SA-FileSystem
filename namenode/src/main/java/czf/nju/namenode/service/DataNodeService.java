@@ -13,8 +13,8 @@ public class DataNodeService {
     @Autowired
     DataNodeRepository dataNodeRepository;
 
-    public void newDataNode(String Id, String url){
-        DataNode dataNode = new DataNode(Id, url);
+    public void newDataNode(String Id, String url, int port){
+        DataNode dataNode = new DataNode(Id, url, port);
         dataNodeRepository.save(dataNode);
     }
 
