@@ -22,6 +22,11 @@ public class NameNodeController {
     @Value("${block.size}")
     private int SIZE;
 
+    @RequestMapping("/**")
+    public String home() {
+        return "Home NameNode";
+    }
+
     @RequestMapping("/hello")
     public String index() {
         return "Hello NameNode";
@@ -31,8 +36,9 @@ public class NameNodeController {
     private NameNodeService nameNodeService;
 
     @GetMapping("/download")
-    public String downloadFile(){
-        return "Download Page";
+    public String downloadFile(@RequestParam("fileName") String fileName){
+        byte[] bytes = nameNodeService.downloadFile(fileName);
+        return "Download Success!";
     }
 
     @PutMapping("/upload")
@@ -40,10 +46,13 @@ public class NameNodeController {
         if (file.isEmpty()) {
             return "No File Selected!";
         }
+        //if(file == ""){
+        //    return "No File Selected!";
+        //}
         // Get the file and save it somewhere
         byte[] bytes = file.getBytes();
         nameNodeService.uploadFile(bytes);
-
+        //nameNodeService.uploadFile(file);
         return "Upload Success!";
     }
 

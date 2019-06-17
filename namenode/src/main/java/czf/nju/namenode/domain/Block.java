@@ -24,6 +24,14 @@ public class Block extends BaseEntity{
      */
     private String dataNodeId;
 
+    private String fileName;
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileName() { return this.fileName; }
+
     public void setData(byte[] src){
         this.data = src;
     }
@@ -40,10 +48,11 @@ public class Block extends BaseEntity{
         return this.dataNodeId;
     }
 
-    public Block(String Id, byte[] data, String dataNodeId){
+    public Block(String Id, byte[] data, String dataNodeId, String fileName){
         this.setId(Id);
         this.setData(data);
         this.setDataNodeId(dataNodeId);
+        this.setFileName(fileName);
     }
 
     public Block(){

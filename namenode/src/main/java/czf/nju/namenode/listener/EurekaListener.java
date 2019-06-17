@@ -27,9 +27,9 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaInstanceRegisteredEvent event) {
-        logger.info("新增节点" + event.getInstanceInfo().getAppName());
+        logger.info("新增节点: " + event.getInstanceInfo().getAppName());
         logger.info("url: " + event.getInstanceInfo().getIPAddr());
-
+        logger.info("port: " + event.getInstanceInfo().getPort());
         dataNodeService.newDataNode(event.getInstanceInfo().getInstanceId(), event.getInstanceInfo().getIPAddr(), event.getInstanceInfo().getPort());
     }
 

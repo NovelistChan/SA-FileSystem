@@ -29,6 +29,9 @@ public class NameNodeService {
     @Autowired
     DataNodeRepository dataNodeRepository;
 
+    @Autowired
+    BlockService blockService;
+
     private Logger logger = Logger.getLogger(NameNodeService.class.getName());
 
     void checkDataNodeInfo() {
@@ -44,11 +47,12 @@ public class NameNodeService {
      * @param file
      */
     public void uploadFile(byte file[]){
+        String fileName = String.valueOf(file[0] + file[1] + file[2]);
         int blockNum = file.length / SIZE + 1;
         //如果文件长度是块大小的倍数，只分length/SIZE块即可，不必+1
         if(file.length == SIZE * (blockNum - 1))
             blockNum--;
-        System.out.println(blockNum + "\n" + file);
+        System.out.println(blockNum + "blocks in file: " + file);
         List<DataNode> dataNodeList = dataNodeRepository.findAll();
         checkDataNodeInfo();
         //负载均衡
@@ -63,11 +67,27 @@ public class NameNodeService {
                     }
                 });
                 dataNodeList.get(0).incBlockInUse();
-               // dataNodeRepository.save(dataNodeList.get(0));
+                byte save[] = new byte[SIZE];
+                for(int k = 0; k < SIZE; k++) {
+                    if(k + i * blockNum >= file.length) break;
+                    else{
+                        save[k] = file[k + blockNum * i];
+                    }
+                }
+                String dataNodeId = dataNodeList.get(0).getId();
+                String blockId = dataNodeList.get(0).getId() + String.valueOf(dataNodeList.get(0).getBlockInUse());
+                blockService.newBlock(blockId, save, dataNodeId, fileName);
+                // dataNodeRepository.save(dataNodeList.get(0));
             }
         }
         for(int i = 0; i < dataNodeList.size(); i++)
             dataNodeRepository.save(dataNodeList.get(i));
         checkDataNodeInfo();
+    }
+
+
+    public byte[] downloadFile(String fileName) {
+        byte[] res = null;
+        return res;
     }
 }
