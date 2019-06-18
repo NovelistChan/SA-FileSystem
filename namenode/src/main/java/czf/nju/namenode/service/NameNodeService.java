@@ -111,10 +111,18 @@ public class NameNodeService {
     }
 
     public boolean isDirectory(String uri) {
-        if (uri == "") return true;
+        if (uri.equals("")) return true;
         else {
-
-            return directoryService.isDirectory(uri);
+            String path = uri.substring(1);
+            if (path.charAt(path.length() - 1) != '/')
+                path += '/';
+            int index = path.indexOf('/');
+            String user = "";
+            if (index >= 0)
+                user = path.substring(0, index);
+            else user = path;
+            logger.info("user detected: " + user);
+            return directoryService.isDirectory(user);
             //return false;
         }
     }

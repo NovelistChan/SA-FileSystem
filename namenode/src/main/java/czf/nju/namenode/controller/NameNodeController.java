@@ -48,7 +48,6 @@ public class NameNodeController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-
     @GetMapping("/**")
     public String downloadFile(){
         String uri = httpServletRequest.getRequestURI();
@@ -58,9 +57,13 @@ public class NameNodeController {
             e.printStackTrace();
             return "Judge Directory Error!";
         }
+        logger.info("uri: " + uri);
+        if (uri.equals("/eureka/status"))
+            uri = "";
+        logger.info("after transfer: " + uri);
         //判断是否是目录
         if (nameNodeService.isDirectory(uri)) {
-
+            logger.info("processing directory...");
         }
         return "Download Success!";
     }
