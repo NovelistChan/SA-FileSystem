@@ -14,11 +14,13 @@ public class BlockService {
     BlockRepository blockRepository;
 
 
-    public void newBlock(String Id, byte data[], String dataNodeId, String fileName){
-        Block block = new Block(Id, data, dataNodeId, fileName);
+    public void newBlock(String Id, byte data[], String fileName){
+        Block block = new Block(Id, data, fileName);
         blockRepository.save(block);
     }
 
-    public void deleteBlock(String Id) { blockRepository.deleteById(Id); }
+    public void deleteBlock(String fileName) {
+        blockRepository.deleteByFileName(fileName);
+    }
 
 }

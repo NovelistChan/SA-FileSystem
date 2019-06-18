@@ -9,10 +9,10 @@ import javax.persistence.Id;
 @Entity
 public class DataNode extends BaseEntity{
     /**
-     * 区分datanode
+     * 区分datanode，包含了IP+Port
      */
     private String url;
-    private int port;
+ //   private int port;
     private int blockInUse;
     private String name;
 
@@ -28,13 +28,13 @@ public class DataNode extends BaseEntity{
         return this.url;
     }
 
-    public void setPort(int port){
-        this.port = port;
-    }
+ //   public void setPort(int port){
+ //       this.port = port;
+ //   }
 
-    public int getPort(){
-        return this.port;
-    }
+ //   public int getPort(){
+ //       return this.port;
+ //   }
 
     public void incBlockInUse() {
         this.blockInUse++;
@@ -48,10 +48,10 @@ public class DataNode extends BaseEntity{
         return this.blockInUse;
     }
 
-    public DataNode(String Id, String url, int port, String name){
+    public DataNode(String Id, String url, String name){
         this.setId(Id);
         this.setUrl(url);
-        this.setPort(port);
+   //     this.setPort(port);
         this.setName(name);
         this.blockInUse = 0;
     }

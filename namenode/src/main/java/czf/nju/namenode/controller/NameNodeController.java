@@ -1,6 +1,6 @@
 package czf.nju.namenode.controller;
 
-import czf.nju.namenode.repository.BlockRepository;
+//import czf.nju.namenode.repository.BlockRepository;
 import czf.nju.namenode.repository.DataNodeRepository;
 import czf.nju.namenode.service.DataNodeService;
 import czf.nju.namenode.service.NameNodeService;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.logging.Logger;
 
 /**
  * Restful接口
@@ -23,13 +24,15 @@ import java.net.URLDecoder;
 @RestController
 public class NameNodeController {
 
-    @Value("${block.size}")
-    private int SIZE;
+//    @Value("${block.size}")
+//    private int SIZE;
 
 //    @RequestMapping("/**")
 //    public String home() {
 //        return "Home NameNode";
 //    }
+
+    private Logger logger = Logger.getLogger(NameNodeController.class.getName());
 
     @RequestMapping("/hello")
     public String index() {
@@ -67,6 +70,7 @@ public class NameNodeController {
             else
                 uri += file.getOriginalFilename();
             //byte fileBytes[] = file.getBytes();
+            logger.info("uploading... uri: " + uri);
             nameNodeService.uploadFile(file, uri);
             //String str = String.valueOf(fileBytes);
             //return str;

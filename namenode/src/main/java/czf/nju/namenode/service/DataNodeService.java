@@ -13,8 +13,8 @@ public class DataNodeService {
     @Autowired
     DataNodeRepository dataNodeRepository;
 
-    public void newDataNode(String Id, String url, int port, String name){
-        DataNode dataNode = new DataNode(Id, url, port, name);
+    public void newDataNode(String Id, String url, String name){
+        DataNode dataNode = new DataNode(Id, url, name);
         dataNodeRepository.save(dataNode);
         //DataNode newNode = dataNodeRepository.findByName(name);
         //System.out.println("after new node: " + newNode.getName());
@@ -27,5 +27,7 @@ public class DataNodeService {
         System.out.println("finish delete");
     }
 
-
+//    public void uploadToDataNode(){
+//
+//    }
 }

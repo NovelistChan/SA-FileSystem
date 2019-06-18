@@ -1,8 +1,9 @@
 package czf.nju.namenode.service;
 
 import com.sun.org.apache.xpath.internal.operations.Mult;
+import czf.nju.namenode.domain.Block;
 import czf.nju.namenode.domain.DataNode;
-import czf.nju.namenode.repository.BlockRepository;
+//import czf.nju.namenode.repository.BlockRepository;
 import czf.nju.namenode.repository.DataNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +28,8 @@ public class NameNodeService {
     @Value("${block.transcript}")
     private int TRANSCRIPT;
 
-    @Autowired
-    BlockRepository blockRepository;
+    //@Autowired
+    //BlockRepository blockRepository;
 
     @Autowired
     DataNodeRepository dataNodeRepository;
@@ -36,12 +37,15 @@ public class NameNodeService {
     @Autowired
     BlockService blockService;
 
+    @Autowired
+    DataNodeService dataNodeService;
+
     private Logger logger = Logger.getLogger(NameNodeService.class.getName());
 
     void checkDataNodeInfo() {
         List<DataNode> dataNodeList = dataNodeRepository.findAll();
         for(int i = 0; i < dataNodeList.size(); i++){
-            logger.info(dataNodeList.get(i).getUrl() + dataNodeList.get(i).getPort() + dataNodeList.get(i).getBlockInUse());
+            logger.info(dataNodeList.get(i).getUrl() + dataNodeList.get(i).getBlockInUse());
         }
     }
 
@@ -85,8 +89,9 @@ public class NameNodeService {
                 //用DataNodeId和当前时间生成BlockId
                 String blockId = dataNodeList.get(0).getId() + simpleDateFormat.format(new Date());
                 String url = dataNodeList.get(0).getUrl();
-                System.out.println("choose datanode: " + url);
-                blockService.newBlock(blockId, save, dataNodeId, fileName, url);
+                System.out.println("Choose DataNode: " + url);
+                blockService.newBlock(blockId, save, fileName, url);
+                //dataNodeService.uploadToDataNode();
                 // dataNodeRepository.save(dataNodeList.get(0));
             }
         }

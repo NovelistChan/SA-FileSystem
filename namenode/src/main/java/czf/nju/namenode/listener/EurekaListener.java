@@ -33,17 +33,16 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaInstanceRegisteredEvent event) {
-        if(event.getInstanceInfo().getStatus() != InstanceInfo.InstanceStatus.UP) return;
+        if (event.getInstanceInfo().getStatus() != InstanceInfo.InstanceStatus.UP) return;
         logger.info("新增节点: " + event.getInstanceInfo().getAppName());
         logger.info("url: " + event.getInstanceInfo().getIPAddr());
         logger.info("port: " + event.getInstanceInfo().getPort());
         logger.info("homepage: " + event.getInstanceInfo().getHomePageUrl());
         logger.info("Id: " + event.getInstanceInfo().getInstanceId());
         logger.info("name: " + event.getInstanceInfo().getAppName());
-        dataNodeService.newDataNode(event.getInstanceInfo().getInstanceId(), event.getInstanceInfo().getIPAddr(),
-                event.getInstanceInfo().getPort(), event.getInstanceInfo().getAppName());
+        dataNodeService.newDataNode(event.getInstanceInfo().getInstanceId(), event.getInstanceInfo().getHomePageUrl()
+                , event.getInstanceInfo().getAppName());
     }
-
     /**
      * 某个datanode被删除或是失效
      * @param event

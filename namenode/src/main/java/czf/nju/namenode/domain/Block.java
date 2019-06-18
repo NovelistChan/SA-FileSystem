@@ -22,7 +22,7 @@ public class Block extends BaseEntity{
     /**
      * Block所属的datanode编号
      */
-    private String dataNodeId;
+    //private String dataNodeId;
 
     private String fileName;
 
@@ -40,18 +40,18 @@ public class Block extends BaseEntity{
         return this.data;
     }
 
-    public void setDataNodeId(String dataNodeId){
-        this.dataNodeId = dataNodeId;
-    }
+    //public void setDataNodeId(String dataNodeId){
+    //    this.dataNodeId = dataNodeId;
+    //}
 
-    public String getDataNodeId() {
-        return this.dataNodeId;
-    }
+    //public String getDataNodeId() {
+    //    return this.dataNodeId;
+    //}
 
-    public Block(String Id, byte[] data, String dataNodeId, String fileName){
+    public Block(String Id, byte[] data, String fileName){
         this.setId(Id);
         this.setData(data);
-        this.setDataNodeId(dataNodeId);
+        //this.setDataNodeId(dataNodeId);
         this.setFileName(fileName);
     }
 
