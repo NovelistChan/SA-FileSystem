@@ -4,6 +4,7 @@ import com.sun.org.apache.xpath.internal.operations.Mult;
 import czf.nju.namenode.domain.Block;
 import czf.nju.namenode.domain.DataNode;
 //import czf.nju.namenode.repository.BlockRepository;
+import czf.nju.namenode.domain.Directory;
 import czf.nju.namenode.repository.DataNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,13 +33,16 @@ public class NameNodeService {
     //BlockRepository blockRepository;
 
     @Autowired
-    DataNodeRepository dataNodeRepository;
+    private DataNodeRepository dataNodeRepository;
 
     @Autowired
-    BlockService blockService;
+    private BlockService blockService;
+
+//    @Autowired
+//    private DataNodeService dataNodeService;
 
     @Autowired
-    DataNodeService dataNodeService;
+    private DirectoryService directoryService;
 
     private Logger logger = Logger.getLogger(NameNodeService.class.getName());
 
@@ -106,7 +110,16 @@ public class NameNodeService {
         return res;
     }
 
-    public boolean isDirectory(String path) {
-        return false;
+    public boolean isDirectory(String uri) {
+        if (uri == "") return true;
+        else {
+
+            return directoryService.isDirectory(uri);
+            //return false;
+        }
+    }
+
+    public String generateDirectoryList() {
+        return "Hello Directory";
     }
 }

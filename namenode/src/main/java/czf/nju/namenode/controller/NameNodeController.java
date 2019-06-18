@@ -49,9 +49,19 @@ public class NameNodeController {
     private HttpServletRequest httpServletRequest;
 
 
-    @GetMapping("/download")
-    public String downloadFile(@RequestParam("fileName") String fileName){
-        byte[] bytes = nameNodeService.downloadFile(fileName);
+    @GetMapping("/**")
+    public String downloadFile(){
+        String uri = httpServletRequest.getRequestURI();
+        try {
+            uri = URLDecoder.decode(uri, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Judge Directory Error!";
+        }
+        //判断是否是目录
+        if (nameNodeService.isDirectory(uri)) {
+
+        }
         return "Download Success!";
     }
 
@@ -92,8 +102,9 @@ public class NameNodeController {
         return "Upload Success!";
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/**")
     public String deleteFile(){
+
         return "Delete Page";
     }
 }
