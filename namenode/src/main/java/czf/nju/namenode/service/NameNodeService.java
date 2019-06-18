@@ -1,14 +1,18 @@
 package czf.nju.namenode.service;
 
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import czf.nju.namenode.domain.DataNode;
 import czf.nju.namenode.repository.BlockRepository;
 import czf.nju.namenode.repository.DataNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -46,11 +50,13 @@ public class NameNodeService {
      * 负载均衡：使用Block数最少最优先
      * @param file
      */
-    public void uploadFile(byte file[]){
-        String fileName = String.valueOf(file[0] + file[1] + file[2]);
-        int blockNum = file.length / SIZE + 1;
+    public void uploadFile(MultipartFile file, String uri) throws Exception{
+        //String fileName = String.valueOf(file[0] + file[1] + file[2]);
+        byte fileBytes[] = file.getBytes();
+        String fileName = file.getOriginalFilename();
+        int blockNum = fileBytes.length / SIZE + 1;
         //如果文件长度是块大小的倍数，只分length/SIZE块即可，不必+1
-        if(file.length == SIZE * (blockNum - 1))
+        if(fileBytes.length == SIZE * (blockNum - 1))
             blockNum--;
         System.out.println(blockNum + "blocks in file: " + file);
         List<DataNode> dataNodeList = dataNodeRepository.findAll();
@@ -69,14 +75,18 @@ public class NameNodeService {
                 dataNodeList.get(0).incBlockInUse();
                 byte save[] = new byte[SIZE];
                 for(int k = 0; k < SIZE; k++) {
-                    if(k + i * blockNum >= file.length) break;
+                    if(k + i * blockNum >= fileBytes.length) break;
                     else{
-                        save[k] = file[k + blockNum * i];
+                        save[k] = fileBytes[k + blockNum * i];
                     }
                 }
                 String dataNodeId = dataNodeList.get(0).getId();
-                String blockId = dataNodeList.get(0).getId() + String.valueOf(dataNodeList.get(0).getBlockInUse());
-                blockService.newBlock(blockId, save, dataNodeId, fileName);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                //用DataNodeId和当前时间生成BlockId
+                String blockId = dataNodeList.get(0).getId() + simpleDateFormat.format(new Date());
+                String url = dataNodeList.get(0).getUrl();
+                System.out.println("choose datanode: " + url);
+                blockService.newBlock(blockId, save, dataNodeId, fileName, url);
                 // dataNodeRepository.save(dataNodeList.get(0));
             }
         }
@@ -89,5 +99,9 @@ public class NameNodeService {
     public byte[] downloadFile(String fileName) {
         byte[] res = null;
         return res;
+    }
+
+    public boolean isDirectory(String path) {
+        return false;
     }
 }

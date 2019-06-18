@@ -18,8 +18,14 @@ public class EurekaListener {
 
     @Autowired
     public EurekaListener(DataNodeService dataNodeService) {
+        this.lastDownNode = null;
         this.dataNodeService = dataNodeService;
     }
+
+    /**
+     * 记录上一个下线的节点
+     */
+    private String lastDownNode;
 
     /**
      * 新注册一个datanode
@@ -27,10 +33,15 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaInstanceRegisteredEvent event) {
+        if(event.getInstanceInfo().getStatus() != InstanceInfo.InstanceStatus.UP) return;
         logger.info("新增节点: " + event.getInstanceInfo().getAppName());
         logger.info("url: " + event.getInstanceInfo().getIPAddr());
         logger.info("port: " + event.getInstanceInfo().getPort());
-        dataNodeService.newDataNode(event.getInstanceInfo().getInstanceId(), event.getInstanceInfo().getIPAddr(), event.getInstanceInfo().getPort());
+        logger.info("homepage: " + event.getInstanceInfo().getHomePageUrl());
+        logger.info("Id: " + event.getInstanceInfo().getInstanceId());
+        logger.info("name: " + event.getInstanceInfo().getAppName());
+        dataNodeService.newDataNode(event.getInstanceInfo().getInstanceId(), event.getInstanceInfo().getIPAddr(),
+                event.getInstanceInfo().getPort(), event.getInstanceInfo().getAppName());
     }
 
     /**
@@ -39,8 +50,13 @@ public class EurekaListener {
      */
     @EventListener
     public void listen(EurekaInstanceCanceledEvent event) {
-        logger.info(event.getServerId() + "号datanode已下线");
-        dataNodeService.deleteDataNode(event.getServerId());
+        logger.info(event.getAppName() + "已下线");
+        if(this.lastDownNode == null)
+            this.lastDownNode = event.getAppName();
+        //else if(this.lastDownNode == event.getAppName())
+        //    return;
+        dataNodeService.deleteDataNode(event.getAppName());
+        this.lastDownNode = event.getAppName();
     }
 
     /**

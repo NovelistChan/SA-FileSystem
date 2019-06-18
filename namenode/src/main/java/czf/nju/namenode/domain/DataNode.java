@@ -14,6 +14,11 @@ public class DataNode extends BaseEntity{
     private String url;
     private int port;
     private int blockInUse;
+    private String name;
+
+    public void setName(String name) { this.name = name; }
+
+    public String getName() { return this.name; }
 
     public void setUrl(String url){
         this.url = url;
@@ -43,10 +48,11 @@ public class DataNode extends BaseEntity{
         return this.blockInUse;
     }
 
-    public DataNode(String Id, String url, int port){
+    public DataNode(String Id, String url, int port, String name){
         this.setId(Id);
         this.setUrl(url);
         this.setPort(port);
+        this.setName(name);
         this.blockInUse = 0;
     }
 
