@@ -156,7 +156,9 @@ public class NameNodeService {
         String path = uri.substring(1);
         int index = path.indexOf('/');
         String fileName = "";
+        String user = "";
         if (index >= 0) {
+            user = path.substring(0, index);
             fileName = path.substring(index + 1);
         } else logger.info("uri wrong in deleting... decoding path");
         index = fileName.indexOf('/');
@@ -164,8 +166,8 @@ public class NameNodeService {
             fileName = fileName.substring(0, index);
         }
         dataNodeService.deleteFile(fileName);
-        blockService.deleteFile(fileName);
-        
+        //blockService.deleteFile(fileName);
+        directoryService.deleteFile(fileName, user);
     }
 
     /**

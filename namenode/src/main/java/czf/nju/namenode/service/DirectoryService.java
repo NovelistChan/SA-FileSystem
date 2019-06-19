@@ -77,8 +77,12 @@ public class DirectoryService {
     }
 
 
-    public void deleteFile(String fileName) {
-
+    public void deleteFile(String fileName, String user) {
+        Directory directory = directoryRepository.findByUser(user);
+        if (directory != null) {
+             directory.deleteFile(fileName);
+             directoryRepository.save(directory);
+        }
     }
     //public boolean inDirectoryRepository
 }

@@ -51,8 +51,11 @@ public class DataNodeController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam(value = "fileName")String fileName) {
-        blockService.deleteBlock(fileName);
+    public String delete(@RequestParam(value = "fileName")String fileName, @RequestParam(value = "partId")Integer partId) {
+        logger.info("Receive Delete request...");
+        logger.info("fileName: " + fileName);
+        logger.info("filePart: " + partId);
+        blockService.deleteBlock(fileName, partId);
         return "Delete Success!";
     }
 }

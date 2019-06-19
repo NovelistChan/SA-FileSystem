@@ -74,7 +74,16 @@ public class BlockService {
         return res;
     }
 
-    public void deleteFile(String fileName) {
-
+    public void deleteFile(String fileName, String url, Integer partId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String requestUrl = url + "delete/";
+        MultiValueMap<String, Object> param = new LinkedMultiValueMap<>();
+        param.add("fileName", fileName);
+        param.add("partId", partId);
+        logger.info("Now request Deleting...");
+        logger.info("fileName: " + fileName);
+        logger.info("filePart" + partId);
+        logger.info("requestUrl: " + requestUrl);
+        restTemplate.postForObject(requestUrl, param, String.class);
     }
 }

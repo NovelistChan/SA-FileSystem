@@ -21,8 +21,17 @@ public class BlockService {
         blockRepository.save(block);
     }
 
-    public void deleteBlock(String fileName) {
-        blockRepository.deleteByFileName(fileName);
+    public void deleteBlock(String fileName, Integer partId) {
+        //blockRepository.deleteByFileName(fileName);
+        List<Block> blockList = blockRepository.findAll();
+        String id = "";
+        for (int i = 0; i < blockList.size(); i++) {
+            if (blockList.get(i).getFileName().equals(fileName) && blockList.get(i).getPartId() == partId) {
+                id = blockList.get(i).getId();
+                break;
+            }
+        }
+        blockRepository.deleteById(id);
     }
 
     public String getBlockData(String fileName, int partId){
