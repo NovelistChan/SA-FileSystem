@@ -26,8 +26,8 @@ public class BlockService {
 
     private Logger logger = Logger.getLogger(BlockService.class.getName());
 
-    public void newBlock(String Id, byte data[], String fileName, String url){
-        Block block = new Block(Id, data, fileName);
+    public void newBlock(String Id, byte data[], String fileName, String url, int partId){
+        Block block = new Block(Id, data, fileName, partId);
        // blockRepository.save(block);
         uploadBlock(block, url);
     }
@@ -46,6 +46,7 @@ public class BlockService {
         };
         param.add("file", byteArrayResource);
         param.add("id", block.getId());
+        param.add("partId", block.getPartId());
         logger.info("id: " + block.getId());
 //        param.put("data", block.getData());
 //        logger.info("data: " + block.getData().toString());

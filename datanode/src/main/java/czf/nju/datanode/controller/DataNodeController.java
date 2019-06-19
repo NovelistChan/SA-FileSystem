@@ -20,7 +20,8 @@ public class DataNodeController {
     }
 
     @PostMapping("/upload")
-    public String upload(@RequestParam(value = "file")MultipartFile file, @RequestParam(value = "id")String id) {
+    public String upload(@RequestParam(value = "file")MultipartFile file, @RequestParam(value = "id")String id,
+                         @RequestParam(value = "partId")int partId) {
         logger.info("Now uploading: " + file.getOriginalFilename());
         logger.info("BlockId: " + id);
         //logger.info("Data: " + file.getBytes());
@@ -29,7 +30,8 @@ public class DataNodeController {
             byte data[] = file.getBytes();
             logger.info("Len: " + data.length);
             logger.info("Data: " + data);
-            blockService.newBlock(id, data, fileName);
+            logger.info("partId: " + partId);
+            blockService.newBlock(id, data, fileName, partId);
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("upload failure in datanode");

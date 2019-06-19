@@ -64,8 +64,14 @@ public class NameNodeController {
         //判断是否是目录
         if (nameNodeService.isDirectory(uri)) {
             logger.info("processing directory...");
+            String directoryList = nameNodeService.getDirectory(uri);
+            return directoryList;
+        } else {
+            logger.info("downloading file...");
+            String file = nameNodeService.downloadFile(uri);
+            return file;
         }
-        return "Download Success!";
+        //return "Download Success!";
     }
 
     @PutMapping("/**")
@@ -78,13 +84,14 @@ public class NameNodeController {
         try {
             uri = URLDecoder.decode(uri, "Utf-8");
             //return uri;
-            if(uri.charAt(uri.length() - 1) != '/')
-                uri += ('/' + file.getOriginalFilename());
-            else
-                uri += file.getOriginalFilename();
+            //if(uri.charAt(uri.length() - 1) != '/')
+            //    uri += ('/' + file.getOriginalFilename());
+            //else
+            //    uri += file.getOriginalFilename();
             //byte fileBytes[] = file.getBytes();
             logger.info("uploading... uri: " + uri);
-            nameNodeService.uploadFile(file, uri);
+            nameNodeService.saveDirectory(uri, file);
+            nameNodeService.uploadFile(file);
             //String str = String.valueOf(fileBytes);
             //return str;
             //nameNodeService.uploadFile(fileBytes, uri);

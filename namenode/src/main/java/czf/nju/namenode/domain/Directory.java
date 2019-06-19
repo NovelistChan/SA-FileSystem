@@ -11,17 +11,17 @@ public class Directory extends BaseEntity{
     /**
      * 目录层
      */
-    String user;
+    private String user;
 
     /**
      *该目录下的文件
      */
-    String[] fileNameList;
+    private String[] fileNameList;
 
     /**
-     * 目录和文件合成uri
+     * 目录和文件合成uri目录
      */
-    String[] uriList;
+    private String uriList;
 
     public void setUser(String user) {
         this.user = user;
@@ -29,6 +29,10 @@ public class Directory extends BaseEntity{
 
     public String getUser() {
         return this.user;
+    }
+
+    public String getUriList() {
+        return this.uriList;
     }
 
     public void addFile(String fileName) {
@@ -67,16 +71,17 @@ public class Directory extends BaseEntity{
         generateUri();
     }
 
-    Directory(){
+    public Directory(){
         this.user = null;
         this.fileNameList = null;
         this.uriList = null;
     }
 
     public void generateUri(){
-        String[] newUriList = new String[this.fileNameList.length];
+        String newUriList = "";
+        newUriList += ("/" + this.user + "\n");
         for (int i = 0; i < this.fileNameList.length; i++)
-            newUriList[i] = this.user + "/" + this.fileNameList[i];
+            newUriList += ("\t/" + this.fileNameList[i] + "\n");
         this.uriList = newUriList;
     }
 }

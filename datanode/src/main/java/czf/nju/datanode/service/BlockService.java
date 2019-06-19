@@ -14,8 +14,8 @@ public class BlockService {
     BlockRepository blockRepository;
 
 
-    public void newBlock(String Id, byte data[], String fileName){
-        Block block = new Block(Id, data, fileName);
+    public void newBlock(String Id, byte data[], String fileName, int partId){
+        Block block = new Block(Id, data, fileName, partId);
         blockRepository.save(block);
     }
 

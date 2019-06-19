@@ -58,7 +58,8 @@ public class NameNodeService {
      * 负载均衡：使用Block数最少最优先
      * @param file
      */
-    public void uploadFile(MultipartFile file, String uri) throws Exception{
+    public void uploadFile(MultipartFile file) throws Exception{
+        //saveDirectory(uri);
         //String fileName = String.valueOf(file[0] + file[1] + file[2]);
         byte fileBytes[] = file.getBytes();
         String fileName = file.getOriginalFilename();
@@ -94,7 +95,7 @@ public class NameNodeService {
                 String blockId = dataNodeList.get(0).getId() + simpleDateFormat.format(new Date());
                 String url = dataNodeList.get(0).getUrl();
                 System.out.println("Choose DataNode: " + url);
-                blockService.newBlock(blockId, save, fileName, url);
+                blockService.newBlock(blockId, save, fileName, url, i);
                 //dataNodeService.uploadToDataNode();
                 // dataNodeRepository.save(dataNodeList.get(0));
             }
@@ -105,11 +106,18 @@ public class NameNodeService {
     }
 
 
-    public byte[] downloadFile(String fileName) {
-        byte[] res = null;
+    public String downloadFile(String uri) {
+        String path = uri.substring(1);
+
+        String res = null;
         return res;
     }
 
+    /**
+     * 判断是目录还是文件
+     * @param uri
+     * @return
+     */
     public boolean isDirectory(String uri) {
         if (uri.equals("")) return true;
         else {
@@ -122,6 +130,11 @@ public class NameNodeService {
                 user = path.substring(0, index);
             else user = path;
             logger.info("user detected: " + user);
+            String fileName = path.substring(index + 1);
+            if (!fileName.equals("")) {
+                logger.info("fileName: " + fileName);
+                return false;
+            }
             return directoryService.isDirectory(user);
             //return false;
         }
@@ -129,5 +142,44 @@ public class NameNodeService {
 
     public String generateDirectoryList() {
         return "Hello Directory";
+    }
+
+    /**
+     * 从uri中截取user字段
+     * @param uri
+     * @return
+     */
+    public String getUser(String uri) {
+        String path = uri.substring(1);
+        if (path.charAt(path.length() - 1) != '/')
+            path += '/';
+        int index = path.indexOf('/');
+        String user = "";
+        if (index >= 0)
+            user = path.substring(0, index);
+        return user;
+    }
+
+    /**
+     * 保存当前uri至仓库，以备以后查询
+     * @param uri
+     * @param file
+     */
+    public void saveDirectory(String uri, MultipartFile file) {
+        String user = getUser(uri);
+        String fileName = file.getOriginalFilename();
+        directoryService.saveDirectory(user, fileName);
+    }
+
+    /**
+     * 获取系统目录
+     * @param uri
+     * @return
+     */
+    public String getDirectory(String uri) {
+        if (uri.equals(""))
+            return directoryService.getDirectory(uri);
+        String user = getUser(uri);
+        return directoryService.getDirectory(user);
     }
 }

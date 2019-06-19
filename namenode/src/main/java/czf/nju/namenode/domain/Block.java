@@ -26,6 +26,19 @@ public class Block extends BaseEntity{
 
     private String fileName;
 
+    /**
+     * 指明该Block是文件分的第几块
+     */
+    private int partId;
+
+    public void setPartId(int partId) {
+        this.partId = partId;
+    }
+
+    public int getPartId() {
+        return this.partId;
+    }
+
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
@@ -48,11 +61,12 @@ public class Block extends BaseEntity{
     //    return this.dataNodeId;
     //}
 
-    public Block(String Id, byte[] data, String fileName){
+    public Block(String Id, byte[] data, String fileName, int partId){
         this.setId(Id);
         this.setData(data);
         //this.setDataNodeId(dataNodeId);
         this.setFileName(fileName);
+        this.setPartId(partId);
     }
 
     public Block(){
