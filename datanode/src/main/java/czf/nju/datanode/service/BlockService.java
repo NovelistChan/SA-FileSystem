@@ -5,6 +5,8 @@ import czf.nju.datanode.repository.BlockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Block的创建、分配
  */
@@ -21,6 +23,18 @@ public class BlockService {
 
     public void deleteBlock(String fileName) {
         blockRepository.deleteByFileName(fileName);
+    }
+
+    public String getBlockData(String fileName, int partId){
+        String res = "";
+        List<Block> blockList = blockRepository.findAll();
+        for (int i = 0; i < blockList.size(); i++) {
+            if (blockList.get(i).getFileName().equals(fileName) && blockList.get(i).getPartId() == partId) {
+                res += String.valueOf(blockList.get(i).getData());
+                break;
+            }
+        }
+        return res;
     }
 
 }

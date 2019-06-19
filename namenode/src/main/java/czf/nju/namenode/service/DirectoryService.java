@@ -76,5 +76,9 @@ public class DirectoryService {
         return menu;
     }
 
+
+    public void deleteFile(String fileName) {
+
+    }
     //public boolean inDirectoryRepository
 }

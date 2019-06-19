@@ -21,7 +21,7 @@ public class DataNodeController {
 
     @PostMapping("/upload")
     public String upload(@RequestParam(value = "file")MultipartFile file, @RequestParam(value = "id")String id,
-                         @RequestParam(value = "partId")int partId) {
+                         @RequestParam(value = "partId")Integer partId) {
         logger.info("Now uploading: " + file.getOriginalFilename());
         logger.info("BlockId: " + id);
         //logger.info("Data: " + file.getBytes());
@@ -40,13 +40,17 @@ public class DataNodeController {
         return "Upload Success!";
     }
 
-    @GetMapping("/download")
-    public String download(@RequestParam(value = "fileName")String fileName) {
-
-        return "Download Success!";
+    @PostMapping("/download")
+    public String download(@RequestParam(value = "fileName")String fileName, @RequestParam(value = "partId")Integer partId) {
+        logger.info("Receive download request...");
+        logger.info("fileName: " + fileName);
+        logger.info("filePart" + partId);
+        String res = blockService.getBlockData(fileName, partId);
+        return res;
+        //return "Download Success!";
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public String delete(@RequestParam(value = "fileName")String fileName) {
         blockService.deleteBlock(fileName);
         return "Delete Success!";

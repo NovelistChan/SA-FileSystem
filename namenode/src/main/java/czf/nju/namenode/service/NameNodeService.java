@@ -38,8 +38,8 @@ public class NameNodeService {
     @Autowired
     private BlockService blockService;
 
-//    @Autowired
-//    private DataNodeService dataNodeService;
+    @Autowired
+    private DataNodeService dataNodeService;
 
     @Autowired
     private DirectoryService directoryService;
@@ -96,6 +96,9 @@ public class NameNodeService {
                 String url = dataNodeList.get(0).getUrl();
                 System.out.println("Choose DataNode: " + url);
                 blockService.newBlock(blockId, save, fileName, url, i);
+                //dataNodeList.get(0).addFileChain(fileName, i);
+                dataNodeList.get(0).addFileBlock(fileName, blockNum);
+                dataNodeList.get(0).addFile(fileName + String.valueOf(i));
                 //dataNodeService.uploadToDataNode();
                 // dataNodeRepository.save(dataNodeList.get(0));
             }
@@ -105,12 +108,64 @@ public class NameNodeService {
         checkDataNodeInfo();
     }
 
-
+    /**
+     * 下载文件
+     * @param uri
+     * @return
+     */
     public String downloadFile(String uri) {
         String path = uri.substring(1);
-
-        String res = null;
+        int index = path.indexOf('/');
+        String fileName = "";
+        if (index >= 0) {
+            fileName = path.substring(index + 1);
+        } else return "uri wrong in downloading... decoding path";
+        index = fileName.indexOf('/');
+        if (index >= 0) {
+            fileName = fileName.substring(0, index);
+        }
+        String res = "";
+        List<DataNode> dataNodeList = dataNodeRepository.findAll();
+        //得到文件的文件块数
+        int fileBlockNum = 0;
+        for (int i = 0; i < dataNodeList.size(); i++) {
+            if (dataNodeList.get(i).getFileNameToBlockNum().containsKey(fileName)) {
+                fileBlockNum = dataNodeList.get(i).getFileNameToBlockNum().get(fileName);
+                break;
+            }
+        }
+        logger.info("In downloading... fileBlockNum: " + fileBlockNum);
+        for (int i = 0; i < fileBlockNum; i++) {
+            String fileToGet = fileName + String.valueOf(i);
+            for (int j = 0; j < dataNodeList.size(); j++) {
+                if (dataNodeList.get(i).getFileList().contains(fileToGet)) {
+                    String url = dataNodeList.get(i).getUrl();
+                    res += blockService.downloadBlock(fileName, i, url);
+                    break;
+                }
+            }
+        }
         return res;
+    }
+
+    /**
+     * 删除文件
+     * @param uri
+     */
+    public void deleteFile(String uri) {
+        String path = uri.substring(1);
+        int index = path.indexOf('/');
+        String fileName = "";
+        if (index >= 0) {
+            fileName = path.substring(index + 1);
+        } else logger.info("uri wrong in deleting... decoding path");
+        index = fileName.indexOf('/');
+        if (index >= 0) {
+            fileName = fileName.substring(0, index);
+        }
+        dataNodeService.deleteFile(fileName);
+        blockService.deleteFile(fileName);
+        
     }
 
     /**

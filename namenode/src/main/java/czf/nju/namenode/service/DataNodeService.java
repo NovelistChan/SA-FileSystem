@@ -13,18 +13,22 @@ public class DataNodeService {
     @Autowired
     DataNodeRepository dataNodeRepository;
 
-    public void newDataNode(String Id, String url, String name){
+    public void newDataNode(String Id, String url, String name) {
         DataNode dataNode = new DataNode(Id, url, name);
         dataNodeRepository.save(dataNode);
         //DataNode newNode = dataNodeRepository.findByName(name);
         //System.out.println("after new node: " + newNode.getName());
     }
 
-    public void deleteDataNode(String name){
+    public void deleteDataNode(String name) {
         //int n = dataNodeRepository.deleteById(Id);
         if(dataNodeRepository.findByName(name) != null)
             dataNodeRepository.deleteByName(name);
         System.out.println("finish delete");
+    }
+
+    public void deleteFile(String fileName) {
+
     }
 
 //    public void uploadToDataNode(){

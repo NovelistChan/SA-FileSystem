@@ -57,4 +57,24 @@ public class BlockService {
         restTemplate.postForObject(requestUrl, param, String.class);
     }
 
+
+    public String downloadBlock(String fileName, Integer partId, String url) {
+        String res = "";
+        RestTemplate restTemplate = new RestTemplate();
+        String requestUrl = url + "download/";
+        //Map<String, Object> param = new HashMap<>();
+        MultiValueMap<String, Object> param = new LinkedMultiValueMap<>();
+        param.add("fileName", fileName);
+        param.add("partId", partId);
+        logger.info("Now request Downloading...");
+        logger.info("fileName: " + fileName);
+        logger.info("filePart: " + partId);
+        logger.info("requestUrl: " + requestUrl);
+        res += restTemplate.postForObject(requestUrl, param, String.class);
+        return res;
+    }
+
+    public void deleteFile(String fileName) {
+
+    }
 }

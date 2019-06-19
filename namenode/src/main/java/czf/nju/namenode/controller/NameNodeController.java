@@ -114,7 +114,23 @@ public class NameNodeController {
 
     @DeleteMapping("/**")
     public String deleteFile(){
-
-        return "Delete Page";
+        String uri = httpServletRequest.getRequestURI();
+        try {
+            uri = URLDecoder.decode(uri, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Judge Delete Error!";
+        }
+        logger.info("uri: " + uri);
+        if (uri.equals("/eureka/status"))
+            uri = "";
+        logger.info("after transfer: " + uri);
+        if (nameNodeService.isDirectory(uri)) {
+            logger.info("This is a Directory!");
+            return "Can't delete a Directory!";
+        } else {
+            nameNodeService.deleteFile(uri);
+        }
+        return "Delete Success!";
     }
 }

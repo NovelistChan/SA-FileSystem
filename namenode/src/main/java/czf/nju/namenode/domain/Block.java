@@ -29,7 +29,7 @@ public class Block extends BaseEntity{
     /**
      * 指明该Block是文件分的第几块
      */
-    private int partId;
+    private Integer partId;
 
     public void setPartId(int partId) {
         this.partId = partId;

@@ -1,7 +1,16 @@
 package czf.nju.namenode.domain;
 
+import org.hibernate.usertype.UserCollectionType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 定义datanode节点
@@ -15,6 +24,14 @@ public class DataNode extends BaseEntity{
  //   private int port;
     private int blockInUse;
     private String name;
+    /**
+     * 文件名对应文件总块数
+     */
+    @ElementCollection
+    private Map<String, Integer> fileNameToBlockNum;
+
+    @ElementCollection
+    private Set<String> fileList;
 
     public void setName(String name) { this.name = name; }
 
@@ -54,6 +71,45 @@ public class DataNode extends BaseEntity{
    //     this.setPort(port);
         this.setName(name);
         this.blockInUse = 0;
+       // this.fileNameToPartId = new LinkedMultiValueMap<>();
+        this.fileList = new HashSet<>();
+        this.fileNameToBlockNum = new HashMap<>();
+    }
+
+//    public void addFileChain(String fileName, Integer partId) {
+//        this.fileNameToPartId.add(fileName, partId);
+//    }
+//
+//    public void deleteFileChain(String fileName) {
+//        this.fileNameToPartId.remove(fileName);
+//    }
+
+    public void addFileBlock(String fileName, Integer blockNum) {
+        this.fileNameToBlockNum.put(fileName, blockNum);
+    }
+
+    public void deleteFileBlock(String fileName) {
+        this.fileNameToBlockNum.remove(fileName);
+    }
+
+//    public MultiValueMap<String, Integer> getFileNameToPartId() {
+//        return this.fileNameToPartId;
+//    }
+
+    public Map<String, Integer> getFileNameToBlockNum() {
+        return this.fileNameToBlockNum;
+    }
+
+    public void addFile(String fileNameBlock) {
+        this.fileList.add(fileNameBlock);
+    }
+
+    public void deleteFile(String fileNameBlock) {
+        this.fileList.remove(fileNameBlock);
+    }
+
+    public Set<String> getFileList() {
+        return this.fileList;
     }
 
     public DataNode(){
