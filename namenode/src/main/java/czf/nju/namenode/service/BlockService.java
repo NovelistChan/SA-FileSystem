@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 /**
  * Block的创建、分配
+ * 发送请求至DataNode,保存、获取或删除DataNode上存储的Block
  */
 @Service
 public class BlockService {

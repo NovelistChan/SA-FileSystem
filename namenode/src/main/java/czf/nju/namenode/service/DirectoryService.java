@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 /**
  * 处理目录集
+ * 具体实现为String形式分段存储
  */
 @Service
 public class DirectoryService {

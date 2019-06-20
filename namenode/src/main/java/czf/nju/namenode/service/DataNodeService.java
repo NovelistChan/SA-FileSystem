@@ -32,6 +32,10 @@ public class DataNodeService {
         System.out.println("finish delete");
     }
 
+    /**
+     * 删除文件在DataNode上存储的信息，调用BlockService
+     * @param fileName
+     */
     public void deleteFile(String fileName) {
         List<DataNode> dataNodeList = dataNodeRepository.findAll();
         int blockNum = 0;

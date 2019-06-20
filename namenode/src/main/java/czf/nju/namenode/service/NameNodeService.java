@@ -149,7 +149,7 @@ public class NameNodeService {
     }
 
     /**
-     * 删除文件
+     * 删除文件及文件目录
      * @param uri
      */
     public void deleteFile(String uri) {
