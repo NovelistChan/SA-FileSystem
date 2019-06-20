@@ -49,7 +49,7 @@ public class NameNodeController {
     private HttpServletRequest httpServletRequest;
 
     @GetMapping("/**")
-    public String downloadFile(){
+    public @ResponseBody String downloadFile(){
         String uri = httpServletRequest.getRequestURI();
         try {
             uri = URLDecoder.decode(uri, "UTF-8");
@@ -75,7 +75,7 @@ public class NameNodeController {
     }
 
     @PutMapping("/**")
-    public String uploadFile(@RequestParam("file") MultipartFile file){
+    public @ResponseBody String uploadFile(@RequestParam("file") MultipartFile file){
         if (file.isEmpty()) {
             return "No File Selected!";
         }
@@ -113,7 +113,7 @@ public class NameNodeController {
     }
 
     @DeleteMapping("/**")
-    public String deleteFile(){
+    public @ResponseBody String deleteFile(){
         String uri = httpServletRequest.getRequestURI();
         try {
             uri = URLDecoder.decode(uri, "UTF-8");

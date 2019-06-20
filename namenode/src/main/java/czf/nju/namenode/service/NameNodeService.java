@@ -67,7 +67,8 @@ public class NameNodeService {
         //如果文件长度是块大小的倍数，只分length/SIZE块即可，不必+1
         if(fileBytes.length == SIZE * (blockNum - 1))
             blockNum--;
-        System.out.println(blockNum + "blocks in file: " + file);
+        //System.out.println(blockNum + "blocks in file: " + file);
+        logger.info(blockNum + "blocks in file: " + file);
         List<DataNode> dataNodeList = dataNodeRepository.findAll();
         checkDataNodeInfo();
         //负载均衡
@@ -94,7 +95,8 @@ public class NameNodeService {
                 //用DataNodeId和当前时间生成BlockId
                 String blockId = dataNodeList.get(0).getId() + simpleDateFormat.format(new Date());
                 String url = dataNodeList.get(0).getUrl();
-                System.out.println("Choose DataNode: " + url);
+                //System.out.println("Choose DataNode: " + url);
+                logger.info("Choose DataNode: " + url);
                 blockService.newBlock(blockId, save, fileName, url, i);
                 //dataNodeList.get(0).addFileChain(fileName, i);
                 dataNodeList.get(0).addFileBlock(fileName, blockNum);
