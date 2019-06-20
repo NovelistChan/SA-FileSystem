@@ -96,6 +96,17 @@ eureka.client.serviceUrl.defaultZone=http://localhost:8000/eureka/
     - get directory after delete
 ![查看删除文件后的目录](https://github.com/NovelistChan/SA-FileSystem/blob/master/images/get%20after%20delete.png)
   - Load Balance: When a Block needs to be upload, choose a datanode with fewest blocks to upload to. （每次要上传一个block时，选取负载量最少的datanode来作为block上传的节点）
-  
+```java
+for(int i = 0; i < blockNum; i++){
+    for(int j = 0; j < TRANSCRIPT; j++){
+        Collections.sort(dataNodeList, new Comparator<DataNode>() {
+            //...按block负载量排序
+        });
+        dataNodeList.get(0).incBlockInUse();//该节点负载量+1
+        //...获取block要存的数据
+        //...向dataNodeList.get(0)发送block
+    }
+}
+```
 ### References
   - http://www.ityouknow.com/ & https://github.com/ityouknow/spring-cloud-examples 
