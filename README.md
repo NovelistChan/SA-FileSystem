@@ -2,7 +2,7 @@
 ### SA-2019-FinalProject
   - A FileSystem consists of two kind of micro-services: datanode & namenode, you can create several datanode services to complete a distributed model.
   - Tried to merge datanode and namenode into one project but failed(See in Repository:https://github.com/NovelistChan/DistributedFileSystem, Error: Bean Not Found)
-  - So now you can see two projects: datanode & namenode. Namenode is a Eureka Server with a listener to manage the health condition of datanodes & send requests to datanodes. Datanode is a Eureka Client & it can save blocks in repository. Run several instances(3 in example) in datanode and one instance in namenode then check the interfaces by POSTMAN. （namenode实现为EurekaServer, 又一个EurekaListener可以监听datanode的健康情况，datanode接受namenode发送的请求对block进行管理）
+  - So now you can see two projects: datanode & namenode. Namenode is a Eureka Server with a listener to manage the health condition of datanodes & send requests to datanodes. Datanode is a Eureka Client & it can save blocks in repository. Run several instances(3 in example) in datanode and one instance in namenode then check the interfaces by POSTMAN. （namenode实现为EurekaServer, 有一个EurekaListener可以监听datanode的健康情况，datanode接受namenode发送的请求对block进行管理）
   - Here is the structure of the whole project(namenode & datanode).
 ```
 namenode
