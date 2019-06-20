@@ -109,5 +109,5 @@ for(int i = 0; i < blockNum; i++){
 }
 ```
   - Transfer Data when a datanode is down(tried but failed)尝试实现在一个datanode下线时进行转存，遇到问题：当datanode下线就无法再获取它上面的数据，那么要在datanode下线之前存副本？(存副本直接用副本替代原节点就好了不需要转存)这部分实现有bug，未上传
-### Referencesjinxingzh
+### References
   - http://www.ityouknow.com/ & https://github.com/ityouknow/spring-cloud-examples 
