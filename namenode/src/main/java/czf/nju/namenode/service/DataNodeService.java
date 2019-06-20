@@ -4,11 +4,13 @@ import czf.nju.namenode.domain.DataNode;
 import czf.nju.namenode.repository.DataNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * datanode的创建等一系列操作
+ * dataNode的创建等一系列操作
  */
 @Service
 public class DataNodeService {
@@ -17,6 +19,8 @@ public class DataNodeService {
 
     @Autowired
     private BlockService blockService;
+
+    private Logger logger = Logger.getLogger(DirectoryService.class.getName());
 
     public void newDataNode(String Id, String url, String name) {
         DataNode dataNode = new DataNode(Id, url, name);
@@ -29,7 +33,8 @@ public class DataNodeService {
         //int n = dataNodeRepository.deleteById(Id);
         if(dataNodeRepository.findByName(name) != null)
             dataNodeRepository.deleteByName(name);
-        System.out.println("finish delete");
+        //System.out.println("finish delete");
+        logger.info("finish delete dataNode");
     }
 
     /**
@@ -49,6 +54,7 @@ public class DataNodeService {
                         dataNodeList.get(i).deleteFile(fileBlock);
                         String url = dataNodeList.get(i).getUrl();
                         blockService.deleteFile(fileName, url, i);
+                        dataNodeList.get(i).decBlockInUse();
                     }
                 }
                 //break;

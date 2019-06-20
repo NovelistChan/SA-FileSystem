@@ -13,12 +13,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 定义datanode节点
+ * 定义dataNode节点
  */
 @Entity
 public class DataNode extends BaseEntity{
     /**
-     * 区分datanode，包含了IP+Port
+     * 区分dataNode，包含了IP+Port
      */
     private String url;
  //   private int port;
@@ -55,6 +55,10 @@ public class DataNode extends BaseEntity{
 
     public void incBlockInUse() {
         this.blockInUse++;
+    }
+
+    public void decBlockInUse() {
+        this.blockInUse--;
     }
 
     public void setBlockInUse(int blockInUse) {

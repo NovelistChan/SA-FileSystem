@@ -20,7 +20,7 @@ public class Block extends BaseEntity{
      */
     private byte[] data;
     /**
-     * Block所属的datanode编号
+     * Block所属的dataNode编号
      */
     //private String dataNodeId;
 
